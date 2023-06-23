@@ -1,14 +1,6 @@
 # Licitagov - Front
-<style>
-#cover {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 30%;
-}
-</style>
 
-<img id="cover" src="cover-image.png" alt="exemplo imagem">
+<img id="cover" stytle="display: block; margin-left: auto; margin-right: auto; width: 30%;" src="cover-image.png" alt="exemplo imagem">
 
 ## 💻 Pré-requisitos
 
