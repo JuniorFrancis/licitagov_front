@@ -55,7 +55,7 @@ const Dashboard = () => {
 			"biddingId": `${id}`
 		}
 
-		BiddingService.setVisible(payload).then( (response) => {
+		BiddingService.setBiddingAsVisualized(payload).then( (response) => {
 			getBids(Number(currentPage)-1);			
 		});
 	}
