@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
-import ListItem from 'components/shared-components/Card/ListItem'
-import { Pagination, message, Row, Col, Card, DatePicker, Modal } from 'antd';
+import { Pagination, message, Row, Col, Card, DatePicker, Modal, Popover } from 'antd';
 import ItemInfo from 'components/shared-components/Card/ItemInfo';
 import ItemHeader from 'components/shared-components/Card/ItemHeader';
 import Flex from 'components/shared-components/Flex';
 import moment from 'moment';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 import BiddingService from 'services/BiddingService';
 import BiddingDetails from './BiddingDetails';
 
-const VIEW_LIST = 'LIST';
-const VIEW_GRID = 'GRID';
-
 const Dashboard = () => {
 
-	const [view, setView] = useState(VIEW_GRID);
 	const [bids, setBids] = useState();
 	const [selectedBindding, setSelectedBindding] = useState();
 	const [totalItens, setTotalItens] = useState();
 	const [totalPages, setTotalPages] = useState();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
-	const [data, setData] = useState();
 	const [date, setDate] = useState(moment("20220622", 'YYYYMMDD'));
 	const [displayDate, setDisplayDate] = useState(new Date("2022-06-23"));
 	const [loading, setLoading] = useState(false);
@@ -40,9 +35,9 @@ const Dashboard = () => {
 		setSelectedBindding(biddingDetails);
 	}
 	
-	const getBids = (page = "0", size = "10") => {
+	const getBids = (page = "0") => {
 		setLoading(true);
-		BiddingService.getBids(date.format('YYYYMMDD'), page, size).then( (response) => {
+		BiddingService.getBids(date.format('YYYYMMDD'), page, pageSize).then( (response) => {
 			setBids(response.content);
 			setTotalItens(response.totalElements);
 			setTotalPages(response.totalPages);
@@ -98,7 +93,12 @@ const Dashboard = () => {
 					</Flex>
 					<Row className="w-100">
 						<Col>
-							<DatePicker defaultValue={moment(displayDate, 'YYYY-MM-DD')} disabled={loading} onChange={onChangePublicationDate} placeholder="Selecione uma data para consultar" disabledDate={d => d.isAfter(displayDate)} />	
+							<Popover className='mr-3' content={"The request for a data queried for the first time may take a little longer than expected"} >
+									<ExclamationCircleOutlined style={{ marginTop: '10px', fontSize: '20px', color: 'blue' }} />
+							</Popover>
+						</Col>
+						<Col>
+							<DatePicker allowClear={false} defaultValue={moment(displayDate, 'YYYY-MM-DD')} disabled={loading} onChange={onChangePublicationDate} placeholder="Selecione uma data para consultar" disabledDate={d => d.isAfter(displayDate)} />	
 						</Col>
 					</Row>
 					
