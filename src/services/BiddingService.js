@@ -10,8 +10,8 @@ class BiddingService extends AbstractService {
        return this.get(`/bidding?page=${page}&size=${size}`);
     }
 
-    setVisible(payload) {
-        return this.post(`/bidding`, payload);
+    setBiddingAsVisualized(payload) {
+        return this.post(`/bidding/visualize`, payload);
     }
 
 }
