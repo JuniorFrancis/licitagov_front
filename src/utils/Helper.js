@@ -2,6 +2,8 @@ import Moment from 'moment';
 import { AUTH_TOKEN } from 'constants/AuthConstant';
 
 const request = async (url, { method = "GET", params } = {}) => {
+  const STATUS_CODE_WITHOUT_RESPONSE = [204, 201];
+
   let token = localStorage.getItem(AUTH_TOKEN) || null
   let headers = {
     "Content-Type": "application/json",
@@ -25,7 +27,7 @@ const request = async (url, { method = "GET", params } = {}) => {
   try {
     const response = await fetch(url, requestOptions);
     var statusCode = response.status;
-    if(statusCode !== 204){
+    if(!STATUS_CODE_WITHOUT_RESPONSE.includes(statusCode)){
       return response.json();
     }
   } catch (error) {
