@@ -4,19 +4,19 @@ import { APP_PREFIX_PATH } from 'configs/AppConfig'
 const dashBoardNavTree = [{
   key: 'home',
   path: `${APP_PREFIX_PATH}`,
-  title: 'Menu',
+  // title: 'Menu',
   icon: SoundOutlined,
   breadcrumb: false,
   isGroupTitle: true,
   submenu: [
-    {
-      key: 'dashboard',
-      path: `${APP_PREFIX_PATH}/dashboard`,
-      title: 'Dashboard',
-      icon: OrderedListOutlined,
-      breadcrumb: false,
-      submenu: []
-    }
+    // {
+    //   key: 'dashboard',
+    //   path: `${APP_PREFIX_PATH}/dashboard`,
+    //   title: 'Dashboard',
+    //   icon: OrderedListOutlined,
+    //   breadcrumb: false,
+    //   submenu: []
+    // }
   ]
 }]
 
