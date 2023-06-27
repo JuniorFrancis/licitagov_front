@@ -1,68 +1,84 @@
-import React from 'react';
-import { Drawer, Divider, } from 'antd';
-import { UserOutlined, TagsOutlined, PicCenterOutlined, CalendarOutlined, ReadOutlined } from '@ant-design/icons';
-import Title from 'antd/lib/skeleton/Title';
+import React, { useEffect } from 'react';
+import { Row, Descriptions, Button, Col, Modal, message } from 'antd';
+import { useState } from 'react';
 
-export const BiddingDetails = ({ data, visible, close}) => {
+import ProposalForm from './ProposalForm';
+
+export const BiddingDetails = ({ selectedBindding, handleCancel, loading }) => {
+
+    const [data, setData] = useState();
+    const [visibleModalProposal, setVisibleModalProposal] = useState(false);
+    const [proposal, setProposal] = useState();
+    
+    const openModalPropose = () => {
+
+        setProposal({
+            "amount": 0,
+            "message": ""
+        });
+
+        setVisibleModalProposal(true);
+    }
+
+    const closeModalPropose = () => {
+        setVisibleModalProposal(false);
+    }
+
+    const onFinishProposal = () => {
+        message.success('Proposal sent successfully');
+    }
+
+    const onFinishProposalWithFailed = () => {
+        message.success('Error');
+    }
+
+
+    useEffect(() =>{
+        setData({selectedBindding});
+    }, [])
     return (
-        <Drawer
-            width={600}
-            placement="right"
-            onClose={close}
-            closable={false}
-            open={visible}
-        >
-            <div className="text-center mt-3">
-                <h3 className="mt-2 mb-0">Detalhes</h3>
-            </div>
-            <Divider dashed />
-            <div className="mt-5">
-                <p>
-                    <h5> Identificador: </h5>
-                    <span className="ml-3 text-dark">{data?.identificador}</span>
-                </p>
-                <p>
-                    <h5> Numero da solicitação: </h5>
-                    <span className="ml-3 text-dark">{data?.numero_item_licitacao}</span>
-                </p>
-                <p>
-                    <h5> Tipo de Pregão: </h5>
-                    <span className="ml-3 text-dark">{data?.tipo_pregao}</span>
-                </p>
-                <p>
-                    <h5> Objeto: </h5>
-                    <span className="ml-3 text-dark">{data?.objeto}</span>
-                </p>
-                <p>
-                    <h5> Número do processo: </h5>
-                    <span className="ml-3 text-dark">{data?.objeto}</span>
-                </p>
-                <p>
-                    <h5> Informações Gerais: </h5>
-                    <span className="ml-3 text-dark">{data?.informacoes_gerais}</span>
-                </p>
-                <p>
-                    <h5> Tipo de Recurso: </h5>
-                    <span className="ml-3 text-dark">{data?.tipo_recurso}</span>
-                </p>
-                <p>
-                    <h5> Nome do responsável: </h5>
-                    <span className="ml-3 text-dark">{data?.nome_responsavel}</span>
-                </p>
-                <p>
-                    <h5> Função do responsável: </h5>
-                    <span className="ml-3 text-dark">{data?.funcao_responsavel}</span>
-                </p>
-                <p>
-                    <h5> Data de entrega do edita; </h5>
-                    <span className="ml-3 text-dark">{data?.data_entrega_edital}</span>
-                </p>
-                <p>
-                    <h5> Endereço de entrega do edita; </h5>
-                    <span className="ml-3 text-dark">{data?.endereco_entrega_edital}</span>
-                </p>
-            </div>
-        </Drawer>
+        <>
+            <Row>
+                <Descriptions title={selectedBindding.identificador + " - " + selectedBindding.numero_item_licitacao}/>
+
+                <Descriptions>
+                    <Descriptions.Item label="Recurso">{selectedBindding.tipo_recurso}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Número do Item da Licitação">{selectedBindding.numero_item_licitacao}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Identificador">{selectedBindding.identificador}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="UASG">{selectedBindding.uasg}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Pregão">{selectedBindding.tipo_pregao}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Número do processo">{selectedBindding.numero_processo}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Responsável">{selectedBindding.nome_responsavel}</Descriptions.Item>
+                </Descriptions>
+
+                <Descriptions>
+                    <Descriptions.Item label="Objeto">{selectedBindding.objeto}</Descriptions.Item>
+                </Descriptions>
+            </Row>
+            <Row className="w-100 mt-4">
+                <Col sm={24} >
+                    <Button className="float-right" type="primary" onClick={handleCancel} loading={loading}> OK </Button>
+                </Col>
+            </Row>
+        </>
     )
 }
 

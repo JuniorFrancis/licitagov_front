@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
 import ListItem from 'components/shared-components/Card/ListItem'
-import { Pagination, message, Row, Col, Card, DatePicker } from 'antd';
+import { Pagination, message, Row, Col, Card, DatePicker, Modal } from 'antd';
 import ItemInfo from 'components/shared-components/Card/ItemInfo';
 import ItemHeader from 'components/shared-components/Card/ItemHeader';
 import Flex from 'components/shared-components/Flex';
@@ -104,31 +104,39 @@ const Dashboard = () => {
 					
 				</div>
 			</PageHeaderAlt>
-			<div className={`my-4 ${view === VIEW_LIST? 'container' : 'container-fluid'}`}>
-				{
-					view === VIEW_LIST ?
-					bids?.map(elm => <ListItem biddingDetailsVisible={biddingDetailsVisible} setBiddingDetailsVisible={setBiddingDetailsVisible} data={elm} key={elm.id}/>)
-					:
-					<Row gutter={16}>
-						{bids?.map(elm => (
-							<Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
-								  <Card loading={loading} onClick={() => showBiddingDetailsVisible(elm)}>
-										<Flex alignItems="center" justifyContent="between">
-											<ItemHeader name={elm?.nome_responsavel.split(" ")[0]} visualized={elm?.visualized} />
-										</Flex>
-										<div className="mt-2">
-											<ItemInfo 
-												uasg={elm?.numero_item_licitacao}
-												visualized={elm?.visualized}
-												closeProposalDate={elm?.data_abertura_proposta}
-											/>
-										</div>
-									</Card>
-								<BiddingDetails data={data} visible={biddingDetailsVisible} close={()=> {closeBiddingDetailsVisible()}}/>
-							</Col>
-						))}
-					</Row>
-				}
+			<div className={`my-4 container-fluid`}>
+				<Row gutter={16}>
+					{bids?.map(elm => (
+						<Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
+								<Card loading={loading} onClick={() => showBiddingDetailsVisible(elm)}>
+									<Flex alignItems="center" justifyContent="between">
+										<ItemHeader name={elm?.nome_responsavel.split(" ")[0]} visualized={elm?.visualized} />
+									</Flex>
+									<div className="mt-2">
+										<ItemInfo 
+											uasg={elm?.numero_item_licitacao}
+											visualized={elm?.visualized}
+											closeProposalDate={elm?.data_abertura_proposta}
+										/>
+									</div>
+								</Card>
+								
+						</Col>
+					))}
+				</Row>
+				<Modal
+					title='Bidding Details'
+					open={biddingDetailsVisible}
+					onCancel={closeBiddingDetailsVisible}
+					width={1000}
+					footer={null}
+				>
+					<BiddingDetails 
+						selectedBindding={selectedBindding} 
+						handleCancel={closeBiddingDetailsVisible}
+						loading={loading} 
+					/>
+				</Modal>
 				<Pagination showSizeChanger={false} showLessItems={true}current={currentPage} onChange={onChangePage} defaultCurrent={1} total={totalItens} />
 			</div>
 		</>
