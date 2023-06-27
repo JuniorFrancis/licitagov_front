@@ -59,14 +59,14 @@ export const LoginForm = props => {
 	const renderOtherSignIn = (
 		<div>
 			<Divider>
-				<span className="text-muted font-size-base font-weight-normal">or create a account</span>
+				<span className="text-muted font-size-base font-weight-normal">crie um conta</span>
 			</Divider>
 			<div className="d-flex justify-content-center">
 				<Button 
 					className="mr-2" 
 					disabled={loading} 
 				>
-					<a href="/auth/register">Sign Up</a>
+					<a href="/auth/register">Criar conta</a>
 				</Button>
 			</div>
 		</div>
@@ -90,11 +90,11 @@ export const LoginForm = props => {
 			>
 				<Form.Item 
 					name="username" 
-					label="Username" 
+					label="Usuário" 
 					rules={[
 						{ 
 							required: true,
-							message: 'Please input your username',
+							message: 'Usuário não pode ser vazio.',
 						}
 					]}>
 					<Input prefix={<UserOutlined className="text-primary" />}/>
@@ -103,22 +103,13 @@ export const LoginForm = props => {
 					name="password" 
 					label={
 						<div className={`${showForgetPassword? 'd-flex justify-content-between w-100 align-items-center' : ''}`}>
-							<span>Password</span>
-							{
-								showForgetPassword && 
-								<span 
-									onClick={() => onForgetPasswordClick} 
-									className="cursor-pointer font-size-sm font-weight-normal text-muted"
-								>
-									Forget Password?
-								</span>
-							} 
+							<span>Senha</span>
 						</div>
 					} 
 					rules={[
 						{ 
 							required: true,
-							message: 'Please input your password',
+							message: 'Senha não pode ser vazia.',
 						}
 					]}
 				>
@@ -126,7 +117,7 @@ export const LoginForm = props => {
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit" block loading={loading}>
-						Sign In
+						Entrar
 					</Button>
 				</Form.Item>
 				{

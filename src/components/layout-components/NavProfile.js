@@ -35,7 +35,7 @@ export const NavProfile = () => {
 				[
 					{
 						key: 'Sign Out',
-						label: <MenuItemSignOut label="Sign Out" />,
+						label: <MenuItemSignOut label="Sair" />,
 					}
 				]
 			}
@@ -45,7 +45,7 @@ export const NavProfile = () => {
 	return (
 			<div className="nav-item">
 				<div className="d-flex align-items-center">
-					<Button onClick={handleClick}><MenuItemSignOut label="Sign Out" /></Button>
+					<Button onClick={handleClick}><MenuItemSignOut label="Sair" /></Button>
 				</div>
 			</div>
 	);

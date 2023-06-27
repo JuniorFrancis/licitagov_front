@@ -93,7 +93,7 @@ const Dashboard = () => {
 					</Flex>
 					<Row className="w-100">
 						<Col>
-							<Popover className='mr-3' content={"The request for a data queried for the first time may take a little longer than expected"} >
+							<Popover className='mr-3' content={"A consulta pode levar tempo a mais do que o esperado."} >
 									<ExclamationCircleOutlined style={{ marginTop: '10px', fontSize: '20px', color: 'blue' }} />
 							</Popover>
 						</Col>
@@ -125,7 +125,7 @@ const Dashboard = () => {
 					))}
 				</Row>
 				<Modal
-					title='Bidding Details'
+					title='Detalhes da Licitação'
 					open={biddingDetailsVisible}
 					onCancel={closeBiddingDetailsVisible}
 					width={1000}

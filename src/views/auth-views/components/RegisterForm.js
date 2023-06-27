@@ -7,22 +7,16 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from "framer-motion"
 
 const rules = {
-	firstname: [
-		{ 
-			required: true,
-			message: 'Please input your firstname'
-		}
-	],
 	username: [
 		{ 
 			required: true,
-			message: 'Please input your username'
+			message: 'Usuário não pode ser vazio'
 		}
 	],
 	password: [
 		{ 
 			required: true,
-			message: 'Please input your password'
+			message: 'Senha não pode ser vazia.'
 		}
 	]
 }
@@ -37,14 +31,14 @@ export const RegisterForm = (props) => {
 	const renderOtherSignIn = (
 		<div>
 			<Divider>
-				<span className="text-muted font-size-base font-weight-normal">already have an account? </span>
+				<span className="text-muted font-size-base font-weight-normal">Já tem uma conta? </span>
 			</Divider>
 			<div className="d-flex justify-content-center">
 				<Button 
 					className="mr-2" 
 					disabled={loading} 
 				>
-					<a href="/auth/login">Sign In</a>
+					<a href="/auth/login">Entrar</a>
 				</Button>
 			</div>
 		</div>
@@ -84,7 +78,7 @@ export const RegisterForm = (props) => {
 			<Form form={form} layout="vertical" name="register-form" onFinish={onSignUp}>
 				<Form.Item 
 					name="username" 
-					label="Username" 
+					label="Usuário" 
 					rules={rules.username}
 					hasFeedback
 				>
@@ -92,7 +86,7 @@ export const RegisterForm = (props) => {
 				</Form.Item>
 				<Form.Item 
 					name="password" 
-					label="Password" 
+					label="Senha" 
 					rules={rules.password}
 					hasFeedback
 				>
@@ -100,7 +94,7 @@ export const RegisterForm = (props) => {
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit" block loading={loading}>
-						Sign Up
+						Criar conta
 					</Button>
 					{ renderOtherSignIn }
 				</Form.Item>

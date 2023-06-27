@@ -20,7 +20,7 @@ const RegisterOne = props => {
 							<div className="my-2">
 								<div className="text-center">
 								<img className="img-fluid" src={`/img/${theme === 'light' ? 'licitagov.png': 'licitagov.png'}`} alt="" />
-									<p className="text-muted">Create a new account:</p>
+									<p className="text-muted">Crie um conta:</p>
 								</div>
 								<Row justify="center">
 									<Col xs={24} sm={24} md={20} lg={20}>
