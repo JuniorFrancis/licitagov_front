@@ -32,13 +32,13 @@ export const Logo = ({ mobileLogo, logoType }) => {
 	const getLogo = () => {
 		if(logoType === 'light') {
 			if(navCollapsed) {
-			return '/img/licitagov-sm.png'
+			return '/img/licitagov.png'
 			}
 			return '/img/licitagov.png'
 		}
 	
 		if (navCollapsed) {
-			return '/img/licitagov-sm.png'
+			return '/img/licitagov.png'
 		}
 		return '/img/licitagov.png'
 	}

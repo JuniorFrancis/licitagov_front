@@ -74,13 +74,13 @@ export const HeaderNav = props => {
 			<div className={`app-header-wrapper ${isNavTop ? 'layout-top-nav' : ''}`}>
 				<Logo logoType={navMode}/>
 				<div className="nav" style={{width: `100%`}}>
-					<div className="nav-left">
+					{/* <div className="nav-left">
 						<div className="nav-item" onClick={onToggle}>
 							<div className="d-flex align-items-center">
 								{navCollapsed || isMobile ? <MenuUnfoldOutlined className="nav-icon" /> : <MenuFoldOutlined className="nav-icon" />}
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="nav-right">
 						<NavProfile />
 					</div>

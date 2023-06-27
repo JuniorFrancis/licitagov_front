@@ -10,7 +10,7 @@ export const AUTHENTICATED_ENTRY = `${APP_PREFIX_PATH}/dashboard`;
 export const UNAUTHENTICATED_ENTRY = '/login'
 
 export const THEME_CONFIG = {
-	navCollapsed: false,
+	navCollapsed: true,
 	sideNavTheme: SIDE_NAV_LIGHT,
 	locale: 'en',
 	navType: NAV_TYPE_SIDE,
