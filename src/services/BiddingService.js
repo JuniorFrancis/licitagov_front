@@ -4,7 +4,7 @@ class BiddingService extends AbstractService {
 
     getBids(publicationDate = null, page, size) {
        if(publicationDate){
-        return this.get(`/bidding?publicationDate=${publicationDate}&page=0&size=10`);
+        return this.get(`/bidding?publicationDate=${publicationDate}&page=${page}&size=${size}`);
        }
     
        return this.get(`/bidding?page=${page}&size=${size}`);

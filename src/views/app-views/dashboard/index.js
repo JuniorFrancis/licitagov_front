@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
-import GridItem from 'components/shared-components/Card/GridItem'
 import ListItem from 'components/shared-components/Card/ListItem'
-import { Skeleton, Radio, message, Row, Col, Tooltip, Tag, Progress, Avatar, Menu, Card, DatePicker } from 'antd';
-import { AppstoreOutlined, UnorderedListOutlined, PlusOutlined } from '@ant-design/icons';
-
+import { Pagination, message, Row, Col, Card, DatePicker } from 'antd';
+import ItemInfo from 'components/shared-components/Card/ItemInfo';
+import ItemHeader from 'components/shared-components/Card/ItemHeader';
 import Flex from 'components/shared-components/Flex';
-import { useEffect } from 'react';
+import moment from 'moment';
 
 import BiddingService from 'services/BiddingService';
 import BiddingDetails from './BiddingDetails';
 
 const VIEW_LIST = 'LIST';
 const VIEW_GRID = 'GRID';
-
-const { Meta } = Card;
-
 
 const Dashboard = () => {
 
@@ -24,12 +20,14 @@ const Dashboard = () => {
 	const [selectedBindding, setSelectedBindding] = useState();
 	const [totalItens, setTotalItens] = useState();
 	const [totalPages, setTotalPages] = useState();
-	const [loading, setLoading] = useState();
-	const [biddingDetailsVisible, setBiddingDetailsVisible] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [pageSize, setPageSize] = useState(10);
+	const [data, setData] = useState();
+	const [date, setDate] = useState(moment("20220622", 'YYYYMMDD'));
+	const [displayDate, setDisplayDate] = useState(new Date("2022-06-23"));
+	const [loading, setLoading] = useState(false);
 
-	const onChangeProjectView = e => {
-		setView(e.target.value)
-	}
+	const [biddingDetailsVisible, setBiddingDetailsVisible] = useState(false);
 
 	const closeBiddingDetailsVisible = () => {
 		setBiddingDetailsVisible(false);
@@ -41,42 +39,54 @@ const Dashboard = () => {
 		setBiddingDetailsVisible(true);
 		setSelectedBindding(biddingDetails);
 	}
-
 	
-	const getBids = (publicationDate = null, page = "0", size = "10") => {
+	const getBids = (page = "0", size = "10") => {
 		setLoading(true);
-		BiddingService.getBids(publicationDate, page, size).then( (response) => {
+		BiddingService.getBids(date.format('YYYYMMDD'), page, size).then( (response) => {
 			setBids(response.content);
 			setTotalItens(response.totalElements);
 			setTotalPages(response.totalPages);
+			setLoading(false);
 
+		}).catch(error => {
+			setLoading(false);
+			console.log(error);
+			message.error(error);
 		});
-
-		setLoading(false);
 	}
 
 	const setBiddingAsVisible = (id) => {
-		setLoading(true);
-		
 		var payload = {
 			"biddingId": `${id}`
 		}
 
-		setLoading(true);
-		
-		BiddingService.setVisible(payload);
-
-		setLoading(false);
+		BiddingService.setVisible(payload).then( (response) => {
+			getBids(Number(currentPage)-1);			
+		});
 	}
 
-	const onChange = (date, dateString) => {
-		var parsedDate = dateString.replaceAll("-", "");
-		getBids(parsedDate, 0, 10);
+	const onChangePublicationDate = (dateString) => {
+
+		if(dateString != null){
+			console.log('teste');
+			setCurrentPage(1);
+			setDate(dateString);
+		} 
+		
+	}
+
+	const onChangePage = (page, pageSize) => {
+		setCurrentPage(page)
+		getBids(Number(page)-1);
 	}
 
 	useEffect(() => {
 		getBids();
 	}, []);
+
+	useEffect(() => {
+		getBids(0, 10);
+	}, [date]);
 
 	return (
 		<>
@@ -85,14 +95,13 @@ const Dashboard = () => {
 					<Flex justifyContent="between" alignItems="center" className="py-4">
 						<h2>Licitações</h2>
 						
-						<div>
-							{/* <Radio.Group defaultValue={VIEW_GRID} onChange={e => onChangeProjectView(e)}>
-								<Radio.Button value={VIEW_GRID}><AppstoreOutlined /></Radio.Button>
-								<Radio.Button value={VIEW_LIST}><UnorderedListOutlined /></Radio.Button>
-							</Radio.Group> */}
-						</div>
 					</Flex>
-					<DatePicker onChange={onChange} placeholder="Selecione uma data para consultar"></DatePicker>
+					<Row className="w-100">
+						<Col>
+							<DatePicker defaultValue={moment(displayDate, 'YYYY-MM-DD')} disabled={loading} onChange={onChangePublicationDate} placeholder="Selecione uma data para consultar" disabledDate={d => d.isAfter(displayDate)} />	
+						</Col>
+					</Row>
+					
 				</div>
 			</PageHeaderAlt>
 			<div className={`my-4 ${view === VIEW_LIST? 'container' : 'container-fluid'}`}>
@@ -103,19 +112,24 @@ const Dashboard = () => {
 					<Row gutter={16}>
 						{bids?.map(elm => (
 							<Col xs={24} sm={24} lg={8} xl={8} xxl={6} key={elm.id}>
-								<GridItem 
-									biddingDetailsVisible={biddingDetailsVisible} 
-									setBiddingDetailsVisible={setBiddingDetailsVisible} 
-									closeBiddingDetailsVisible={closeBiddingDetailsVisible}
-									showBiddingDetailsVisible={ elm => showBiddingDetailsVisible(elm)}
-									loading={loading} 
-									data={elm} 
-									
-								/>
+								  <Card loading={loading} onClick={() => showBiddingDetailsVisible(elm)}>
+										<Flex alignItems="center" justifyContent="between">
+											<ItemHeader name={elm?.nome_responsavel.split(" ")[0]} visualized={elm?.visualized} />
+										</Flex>
+										<div className="mt-2">
+											<ItemInfo 
+												uasg={elm?.numero_item_licitacao}
+												visualized={elm?.visualized}
+												closeProposalDate={elm?.data_abertura_proposta}
+											/>
+										</div>
+									</Card>
+								<BiddingDetails data={data} visible={biddingDetailsVisible} close={()=> {closeBiddingDetailsVisible()}}/>
 							</Col>
 						))}
 					</Row>
 				}
+				<Pagination showSizeChanger={false} showLessItems={true}current={currentPage} onChange={onChangePage} defaultCurrent={1} total={totalItens} />
 			</div>
 		</>
 	)
